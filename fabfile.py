@@ -1,3 +1,5 @@
+#Run initPackages.sh first to install required packages in ubuntu.
+
 from __future__ import with_statement
 from fabric.api import env, local, run, lcd, cd, sudo
 import os
@@ -9,6 +11,7 @@ srcDir = 'src'
 libDir = 'lib'
 
 localLibDir = srcDir + '/' + libDir
+cssSandPaperDir = 'cssSandPaper'
 
 gitIgnoreGlobal = 'gitignoreGlobal'
 gitAlias = [ 'user.name  brgd', 'user.email hohhots@gmail.com', 'push.default matching',
@@ -21,12 +24,13 @@ gitAlias = [ 'user.name  brgd', 'user.email hohhots@gmail.com', 'push.default ma
              'alias.hist \'log --pretty=format:%h-%ad-|-%s%d-[%an] --graph --date=short\'',
              'core.excludesfile \'~/.' + gitIgnoreGlobal + '\'' ]
 
-tools = ['brackets']
+devTools = [ 'brackets','git' ]
 
-def installTools():
-    for tool in tools:
+libDir = 'lib'
+dojoSubDirs = [ 'dojo','dojox','dijit','util','docs','demos' ]
 
-        local('sudo apt-get install ' + tool)
+dojoGit = 'https://github.com/dojo/'
+cssSandPaperGit = 'https://github.com/zoltan-dulac/'
 
 def localGitConfig():
     for alias in gitAlias:
@@ -36,12 +40,53 @@ def localGitConfig():
     	local('rm ' + hd)
     local('cp -r ' + gitIgnoreGlobal + ' ' + hd) #copy gitignoreGlobal to user direcroty
 
+def localPullAll():
+    local('git pull --all')
+
+def localMuiPull():
+    localPullAll()
+
+def localPull(sdir, ddir):
+    a = libDir + '/' + ddir
+    if not os.path.exists(a):
+        local('git clone ' + sdir + ddir + '.git ' + a)
+    else:
+        with lcd(a):
+            print bcolors.OKGREEN + "Directory - " + a + bcolors.ENDC
+            localPullAll()    
+
+def localDojoPull():
+    for dir in dojoSubDirs:
+        localPull(dojoGit, dir)
+
+def localCssSandPaperPull():
+    localPull(cssSandPaperGit, cssSandPaperDir)
+        
 def gitPull():
-    localGitConfig()
+    localMuiPull()
+    localDojoPull()
+    localCssSandPaperPull()
+    
     
 def setup(): #setup mjui project
-    installTools()
+    localGitConfig()
     gitPull()
+
+def localPush():
+    local('git push') # runs the command on the local environment
+    
+def piPull():
+    with cd('/home/pi/myProject/mjui'):
+        run('git pull') # runs the command on the remote environment
+        sudo('initPackages.sh')
+        run('fab gitPull')
+    
+def done():
+    #push to github from local
+    localPush()
+
+    #pull from github in pi
+    piPull()
     
 class bcolors:
     HEADER = '\033[95m'
