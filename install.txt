@@ -1,0 +1,2 @@
+1, Run initPackages.sh to install required packages in ubuntu.
+2, Run 'fab setup' to setup development environment.
