@@ -3,7 +3,10 @@
 from __future__ import with_statement
 from fabric.api import env, local, run, lcd, cd, sudo
 import os
-from fabric.contrib.files import sed
+from fabric.contrib.files import sed, exists
+
+mjuiName = 'mjui'
+baseDir = '/opt'
 
 env.hosts = ['pi@192.168.3.254:22']
 
@@ -27,6 +30,7 @@ dojoSubDirs = [ 'dojo','dojox','dijit','util','docs','demos' ]
 
 cssSandPaperName = 'cssSandPaper'
 
+mjuiGit = 'https://github.com/hohhots/'
 dojoGit = 'https://github.com/dojo/'
 cssSandPaperGit = 'https://github.com/zoltan-dulac/'
 
@@ -79,10 +83,14 @@ def localPush():
     local('git push') # runs the command on the local environment
     
 def piPull():
-    with cd('/home/pi/myProject/mjui'):
-        run('git pull') # runs the command on the remote environment
-        sudo('initPackages.sh')
-        run('fab gitPull')
+    a = baseDir + '/' + mjuiName
+    if not exists(a):
+        sudo('git clone ' + mjuiGit + mjuiName + '.git ' + a)
+    with cd(a):
+        print bcolors.OKGREEN + mjuiName + " Directory - " + a + bcolors.ENDC
+        sudo('git pull') # runs the command on the remote environment
+        sudo('./initPackages.sh')
+        sudo('fab gitPull')
     
 def done():
     #push to github from local
