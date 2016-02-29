@@ -3,7 +3,7 @@
 from __future__ import with_statement
 from fabric.api import env, local, run, lcd, cd, sudo
 import os
-from fabric.contrib.files import sed, exists
+from fabric.contrib.files import exists
 
 mjuiName = 'mjui'
 baseDir = '/opt'
