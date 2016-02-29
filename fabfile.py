@@ -43,7 +43,7 @@ def localGitConfig():
 def localPullAll():
     local('git pull --all')
 
-def localMuiPull():
+def localMjuiPull():
     localPullAll()
 
 def localPull(sdir, ddir):
@@ -63,7 +63,7 @@ def localCssSandPaperPull():
     localPull(cssSandPaperGit, cssSandPaperDir)
         
 def gitPull():
-    localMuiPull()
+    localMjuiPull()
     localDojoPull()
     localCssSandPaperPull()
     
