@@ -10,9 +10,6 @@ env.hosts = ['pi@192.168.3.254:22']
 srcDir = 'src'
 libDir = 'lib'
 
-localLibDir = srcDir + '/' + libDir
-cssSandPaperDir = 'cssSandPaper'
-
 gitIgnoreGlobal = 'gitignoreGlobal'
 gitAlias = [ 'user.name  brgd', 'user.email hohhots@gmail.com', 'push.default matching',
              'branch.autosetuprebase always', 'core.editor \'emacs -fs\'', 'color.ui true',
@@ -24,10 +21,11 @@ gitAlias = [ 'user.name  brgd', 'user.email hohhots@gmail.com', 'push.default ma
              'alias.hist \'log --pretty=format:%h-%ad-|-%s%d-[%an] --graph --date=short\'',
              'core.excludesfile \'~/.' + gitIgnoreGlobal + '\'' ]
 
-devTools = [ 'brackets','git' ]
-
 libDir = 'lib'
+dojoName = 'dojo'
 dojoSubDirs = [ 'dojo','dojox','dijit','util','docs','demos' ]
+
+cssSandPaperName = 'cssSandPaper'
 
 dojoGit = 'https://github.com/dojo/'
 cssSandPaperGit = 'https://github.com/zoltan-dulac/'
@@ -46,21 +44,26 @@ def localPullAll():
 def localMjuiPull():
     localPullAll()
 
-def localPull(sdir, ddir):
-    a = libDir + '/' + ddir
+def localPull(sdir, project, ddir):
+    if ddir != '':
+        a = libDir + '/' + project + '/' + ddir
+    else:
+        a = libDir + '/' + project
+        ddir = project
+        
     if not os.path.exists(a):
         local('git clone ' + sdir + ddir + '.git ' + a)
     else:
         with lcd(a):
-            print bcolors.OKGREEN + "Directory - " + a + bcolors.ENDC
+            print bcolors.OKGREEN + project + " Directory - " + a + bcolors.ENDC
             localPullAll()    
 
 def localDojoPull():
     for dir in dojoSubDirs:
-        localPull(dojoGit, dir)
+        localPull(dojoGit, dojoName, dir)
 
 def localCssSandPaperPull():
-    localPull(cssSandPaperGit, cssSandPaperDir)
+    localPull(cssSandPaperGit, cssSandPaperName, '')
         
 def gitPull():
     localMjuiPull()
