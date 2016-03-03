@@ -32,6 +32,7 @@ dojoSubDirs = [ 'dojo','dojox','dijit','util','docs','demos' ]
 
 cssSandPaperName = 'cssSandPaper'
 
+node_modules = 'node_modules'
 packageJsonFile = 'package.json'
 npmPackages = [ 'grunt','grunt-contrib-watch','grunt-contrib-jshint' ]
 
@@ -80,6 +81,7 @@ def gitPull():
     localCssSandPaperPull()
     
 def installGruntPlugins():
+    local('rm -r node_modules')
     if os.path.exists(packageJsonFile):
         local('rm ' + packageJsonFile)
     
