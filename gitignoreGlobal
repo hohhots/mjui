@@ -2,5 +2,6 @@
 .settings
 *brgd.*
 *.pyc
+package.json
 lib
 node_modules
