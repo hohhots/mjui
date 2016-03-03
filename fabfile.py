@@ -33,7 +33,7 @@ dojoSubDirs = [ 'dojo','dojox','dijit','util','docs','demos' ]
 cssSandPaperName = 'cssSandPaper'
 
 packageJsonFile = 'package.json'
-npmPackages = [ 'grunt' 'grunt-contrib-jshint' ]
+npmPackages = [ 'grunt','grunt-contrib-jshint' ]
 
 mjuiGit = 'https://github.com/hohhots/'
 dojoGit = 'https://github.com/dojo/'
@@ -89,9 +89,9 @@ def installGruntPlugins():
 
 def setup(): #setup mjui project
     localGitConfig()
-    gitPull()
     installGruntPlugins()
-
+    gitPull()
+    
 def localPush():
     local('git push') # runs the command on the local environment
     
