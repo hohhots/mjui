@@ -33,7 +33,7 @@ dojoSubDirs = [ 'dojo','dojox','dijit','util','docs','demos' ]
 cssSandPaperName = 'cssSandPaper'
 
 packageJsonFile = 'package.json'
-npmPackages = [ 'grunt','grunt-contrib-jshint' ]
+npmPackages = [ 'grunt','grunt-contrib-watch','grunt-contrib-jshint' ]
 
 mjuiGit = 'https://github.com/hohhots/'
 dojoGit = 'https://github.com/dojo/'
