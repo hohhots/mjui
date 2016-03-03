@@ -3,3 +3,4 @@
 *brgd.*
 *.pyc
 lib
+node_modules

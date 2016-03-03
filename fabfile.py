@@ -13,6 +13,8 @@ env.hosts = ['pi@192.168.3.254:22']
 srcDir = 'src'
 libDir = 'lib'
 
+installSoftFile = 'initPackages.sh'
+
 gitIgnoreGlobal = 'gitignoreGlobal'
 gitAlias = [ 'user.name  brgd', 'user.email hohhots@gmail.com', 'push.default matching',
              'branch.autosetuprebase always', 'core.editor \'emacs -fs\'', 'color.ui true',
@@ -29,6 +31,9 @@ dojoName = 'dojo'
 dojoSubDirs = [ 'dojo','dojox','dijit','util','docs','demos' ]
 
 cssSandPaperName = 'cssSandPaper'
+
+packageJsonFile = 'package.json'
+npmPackages = [ 'grunt' 'grunt-contrib-jshint' ]
 
 mjuiGit = 'https://github.com/hohhots/'
 dojoGit = 'https://github.com/dojo/'
@@ -74,10 +79,18 @@ def gitPull():
     localDojoPull()
     localCssSandPaperPull()
     
+def installGruntPlugins():
+    if os.path.exists(packageJsonFile):
+        local('rm ' + packageJsonFile)
     
+    local('npm init')
+    for npm in npmPackages:
+        local('npm install ' + npm + ' --save-dev')
+
 def setup(): #setup mjui project
     localGitConfig()
     gitPull()
+    installGruntPlugins()
 
 def localPush():
     local('git push') # runs the command on the local environment
@@ -89,7 +102,7 @@ def piPull():
     with cd(a):
         print bcolors.OKGREEN + mjuiName + " Directory - " + a + bcolors.ENDC
         sudo('git pull') # runs the command on the remote environment
-        sudo('./initPackages.sh')
+        sudo('./' + installSoftFile)
         sudo('fab gitPull')
     
 def done():
