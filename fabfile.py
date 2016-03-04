@@ -34,7 +34,7 @@ cssSandPaperName = 'cssSandPaper'
 
 node_modules = 'node_modules'
 packageJsonFile = 'package.json'
-npmPackages = [ 'grunt','grunt-contrib-watch','grunt-contrib-jshint' ]
+npmPackages = [ 'grunt-cli','grunt','grunt-contrib-watch','grunt-contrib-jshint' ]
 
 mjuiGit = 'https://github.com/hohhots/'
 dojoGit = 'https://github.com/dojo/'
