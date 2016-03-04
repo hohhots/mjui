@@ -81,13 +81,14 @@ def gitPull():
     localCssSandPaperPull()
     
 def installGruntPlugins():
-    local('rm -r node_modules')
     if os.path.exists(packageJsonFile):
         local('rm ' + packageJsonFile)
     
     local('npm init')
     for npm in npmPackages:
-        local('npm install ' + npm + ' --save-dev')
+        if not os.path.exists(node_modules + '/' + npm):
+            local('npm install ' + npm + ' --save-dev')
+    local('npm update')
 
 def setup(): #setup mjui project
     localGitConfig()
