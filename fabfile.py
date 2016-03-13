@@ -87,6 +87,7 @@ def gitPull():
     localCssSandPaperPull()
     
 def installGruntPlugins():
+    print bcolors.OKGREEN + " Install grunt plugins for test!" + bcolors.ENDC
     if os.path.exists(packageJsonFile):
         local('rm ' + packageJsonFile)
     
@@ -104,6 +105,7 @@ def installChromeDriver():
         local('rm -r ' + chromeDriverFileName)
 
 def startServices():
+    print bcolors.OKGREEN + " Start services for test!" + bcolors.ENDC
     local('./chromedriver --port=4444 --url-base=wd/hub &')
     local(node_modules + '/grunt-cli/bin/grunt')
         
