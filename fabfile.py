@@ -42,6 +42,10 @@ mjuiGit = 'https://github.com/hohhots/'
 dojoGit = 'https://github.com/dojo/'
 cssSandPaperGit = 'https://github.com/zoltan-dulac/'
 
+chromeDriverName = 'chromedriver'
+chromeDriverFileName = chromeDriverName + '_linux64.zip'
+chromeDriverUrl = 'http://chromedriver.storage.googleapis.com/2.21/' + chromeDriverFileName
+
 def localGitConfig():
     for alias in gitAlias:
         local('git config --global ' + alias)
@@ -92,10 +96,23 @@ def installGruntPlugins():
             local('npm install ' + npm + ' --save-dev')
     local('npm update')
 
+def installChromeDriver():
+    print bcolors.OKGREEN + " Install chromedriver for test!" + bcolors.ENDC
+    if not os.path.exists(chromeDriverName):
+        local('wget ' + chromeDriverUrl)
+        local('unzip ' + chromeDriverFileName)
+        local('rm -r ' + chromeDriverFileName)
+
+def startServices():
+    local('./chromedriver --port=4444 --url-base=wd/hub &')
+    local(node_modules + '/grunt-cli/bin/grunt')
+        
 def setup(): #setup mjui project
     localGitConfig()
     installGruntPlugins()
+    installChromeDriver()
     gitPull()
+    startServices()
     
 def localPush():
     local('git push') # runs the command on the local environment
